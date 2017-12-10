@@ -3,11 +3,126 @@ var prompts = rl.createInterface(process.stdin, process.stdout);
 
 /* puzzle input: 289326 */
 prompts.question("Input a number: ", function (input) {
-    calMatrix(parseInt(input));
+    var input_int = parseInt(input);
+    /* part 1 */
+    var pos = calMatrix(input_int);
+    var distance = Math.abs(pos['x']) + Math.abs(pos['y']);
+    console.log('Part 1 Ans: ' + distance);
+
+    /* part 2 */
+    var matrix = {};
+    var val = 0;
+    var tmp_x = 0;
+    var tmp_y = 0;
+
+    for (var i = 1; i <= input_int; i++)
+    {
+        val = 0;
+        if (i === 1)
+        {
+            val = 1;
+            pos = {
+                "x" : 0,
+                "y" : 0
+            }
+        }
+        else {
+            pos = calMatrix(i);
+            /* top */
+            tmp_x = parseInt(pos["x"]) + 1;
+            tmp_x = tmp_x.toString();
+            if(matrix[tmp_x] !== undefined && matrix[tmp_x][pos["y"]] !== undefined)
+            {
+                val = val + matrix[tmp_x][pos["y"]];
+            }
+
+            /* top-right */
+            tmp_x = parseInt(pos["x"]) + 1;
+            tmp_x = tmp_x.toString();
+            tmp_y = parseInt(pos["y"]) + 1;
+            tmp_y = tmp_y.toString();
+            if(matrix[tmp_x] !== undefined && matrix[tmp_x][tmp_y] !== undefined)
+            {
+                val = val + matrix[tmp_x][tmp_y];
+            }
+
+            /* right */
+            tmp_y = parseInt(pos["y"]) + 1;
+            tmp_y = tmp_y.toString();
+            if(matrix[pos["x"]] !== undefined && matrix[pos["x"]][tmp_y] !== undefined)
+            {
+                val = val + matrix[pos["x"]][tmp_y];
+            }
+
+            /* bottom-right */
+            tmp_x = parseInt(pos["x"]) + 1;
+            tmp_x = tmp_x.toString();
+            tmp_y = parseInt(pos["y"]) - 1;
+            tmp_y = tmp_y.toString();
+            if(matrix[tmp_x] !== undefined && matrix[tmp_x][tmp_y] !== undefined)
+            {
+                val = val + matrix[tmp_x][tmp_y];
+            }
+
+            /* bottom */
+            tmp_x = parseInt(pos["x"]) - 1;
+            tmp_x = tmp_x.toString();
+            if(matrix[tmp_x] !== undefined && matrix[tmp_x][pos["y"]] !== undefined)
+            {
+                val = val + matrix[tmp_x][pos["y"]];
+            }
+
+            /* bottom-left */
+            tmp_x = parseInt(pos["x"]) - 1;
+            tmp_x = tmp_x.toString();
+            tmp_y = parseInt(pos["y"]) - 1;
+            tmp_y = tmp_y.toString();
+            if(matrix[tmp_x] !== undefined && matrix[tmp_x][tmp_y] !== undefined)
+            {
+                val = val + matrix[tmp_x][tmp_y];
+            }
+
+            /* left */
+            tmp_y = parseInt(pos["y"]) - 1;
+            tmp_y = tmp_y.toString();
+            if(matrix[pos["x"]] !== undefined && matrix[pos["x"]][tmp_y] !== undefined)
+            {
+                val = val + matrix[pos["x"]][tmp_y];
+            }
+
+            /* top-left */
+            tmp_x = parseInt(pos["x"]) - 1;
+            tmp_x = tmp_x.toString();
+            tmp_y = parseInt(pos["y"]) + 1;
+            tmp_y = tmp_y.toString();
+            if(matrix[tmp_x] !== undefined && matrix[tmp_x][tmp_y] !== undefined)
+            {
+                val = val + matrix[tmp_x][tmp_y];
+            }
+
+            // val = val + i;
+        }
+
+        if(matrix[pos["x"]] === undefined) {
+            matrix[pos["x"]] = [];
+        }
+
+        matrix[pos["x"]][pos["y"]] = val;
+
+        // console.log("( " + pos["x"] + " , " + pos["y"] + " ) = " + val);
+
+        if(val > input_int)
+        {
+            console.log('Part 2 Ans: ' + val);
+            break;
+        }
+    }
+
     process.exit();
 });
 
 function calMatrix(num) {
+    /* part 1 */
     var num_sqrt = Math.sqrt(num);
 
     var num_sqrt_floor = 0;
@@ -61,6 +176,10 @@ function calMatrix(num) {
 
     // console.log(num + " ( " + x_val + " , " + y_val + " )");
 
-    var distance = Math.abs(x_val) + Math.abs(y_val);
-    console.log('Part 1 Ans: ' + distance);
+    var result = {
+        x: x_val,
+        y : y_val
+    };
+
+    return result;
 }
