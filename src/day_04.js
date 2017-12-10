@@ -10,7 +10,7 @@ fs.readFile('../input/input_04.txt', 'utf8', function (err, data) {
     var is_valid = true;
 
     for (var i = 0; i < Object.keys(input_text).length; i++) {
-        is_valid = true
+        is_valid = true;
         input_text[i] = input_text[i].replace("\r", "");
 
         input_arr[i] = input_text[i].split(" ");
